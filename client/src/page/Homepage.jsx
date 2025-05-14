@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import VideoBackground from '../components/common/VideoBackground'
 import Cardblog from '../components/common/Cardblog'
 import Navbar from '../components/common/Navbar'
-import { motion } from 'framer-motion'
+import WeatherWidget from '../components/common/WeatherWidget'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FiSearch, FiMapPin, FiStar, FiMail } from 'react-icons/fi'
 
 const Homepage = () => {
+    const [searchQuery, setSearchQuery] = useState('')
+    const [selectedRegion, setSelectedRegion] = useState('all')
+    
     const blogs = [
         {
             image: 1,
@@ -68,6 +73,38 @@ const Homepage = () => {
         // }
     ]
 
+    const regions = [
+        { id: 'all', name: 'ทุกภูมิภาค' },
+        { id: 'north', name: 'ภาคเหนือ' },
+        { id: 'northeast', name: 'ภาคอีสาน' },
+        { id: 'central', name: 'ภาคกลาง' },
+        { id: 'south', name: 'ภาคใต้' }
+    ]
+
+    const testimonials = [
+        {
+            name: 'คุณสมชาย',
+            location: 'ดอยม่อนจอง',
+            rating: 5,
+            comment: 'บรรยากาศดีมาก เงียบสงบ เหมาะกับการพักผ่อนสุดๆ',
+            avatar: '/assets/images/avatar1.jpg'
+        },
+        {
+            name: 'คุณสมหญิง',
+            location: 'ปางอุ๋ง',
+            rating: 5,
+            comment: 'วิวสวยมาก ตื่นเช้ามาเจอทะเลหมอกแบบนี้คุ้มค่าจริงๆ',
+            avatar: '/assets/images/avatar2.jpg'
+        },
+        {
+            name: 'คุณสมศักดิ์',
+            location: 'บ้านแม่กำปอง',
+            rating: 4,
+            comment: 'ชุมชนน่ารัก บรรยากาศดี อาหารอร่อย',
+            avatar: '/assets/images/avatar3.jpg'
+        }
+    ]
+
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -88,6 +125,8 @@ const Homepage = () => {
             }
         }
     }
+
+    const popularLocations = ['ดอยม่อนจอง', 'ปางอุ๋ง', 'บ้านแม่กำปอง']
 
     return (
         <div className="relative min-h-screen">
@@ -122,6 +161,63 @@ const Homepage = () => {
                 {/* Gradient Overlay */}
                 <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-[#161914] pointer-events-none z-30"></div>
             </div>
+
+            {/* Search and Filter Section */}
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="bg-[#161914] py-16 px-4"
+            >
+                <div className="max-w-6xl mx-auto">
+                    <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+                        <div className="relative flex-1 max-w-xl">
+                            <input
+                                type="text"
+                                placeholder="ค้นหาจุดหมายปลายทาง..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:border-green-500"
+                            />
+                            <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60" />
+                        </div>
+                        <select
+                            value={selectedRegion}
+                            onChange={(e) => setSelectedRegion(e.target.value)}
+                            className="px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-green-500"
+                        >
+                            {regions.map(region => (
+                                <option key={region.id} value={region.id} className='text-white bg-[#161914]'>{region.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            </motion.div>
+
+            {/* Weather Widget Section */}
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="py-20 px-4 bg-[#161914]"
+            >
+                <div className="max-w-6xl mx-auto">
+                    <motion.h2
+                        variants={itemVariants}
+                        className="text-white text-center text-4xl font-bold mb-16"
+                    >
+                        สภาพอากาศวันนี้
+                    </motion.h2>
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {popularLocations.map((location, index) => (
+                            <motion.div key={index} variants={itemVariants}>
+                                <WeatherWidget location={location} />
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </motion.div>
 
             {/* Main Content Section */}
             <div className="bg-[#161914] w-full min-h-screen relative">
@@ -309,30 +405,88 @@ const Homepage = () => {
                         </div>
                     </motion.div>
 
+                    {/* Testimonials Section */}
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        className="py-20 px-4 bg-[#161914]"
+                    >
+                        <div className="max-w-6xl mx-auto">
+                            <motion.h2
+                                variants={itemVariants}
+                                className="text-white text-center text-4xl font-bold mb-16"
+                            >
+                                เสียงจากนักเดินทาง
+                            </motion.h2>
+                            <div className="grid md:grid-cols-3 gap-8">
+                                {testimonials.map((testimonial, index) => (
+                                    <motion.div
+                                        key={index}
+                                        variants={itemVariants}
+                                        className="bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-colors"
+                                    >
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <img
+                                                src={testimonial.avatar}
+                                                alt={testimonial.name}
+                                                className="w-12 h-12 rounded-full object-cover"
+                                            />
+                                            <div>
+                                                <h4 className="text-white font-semibold">{testimonial.name}</h4>
+                                                <div className="flex items-center gap-1 text-yellow-400">
+                                                    {[...Array(testimonial.rating)].map((_, i) => (
+                                                        <FiStar key={i} className="fill-current" />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p className="text-gray-300 mb-2">{testimonial.comment}</p>
+                                        <div className="flex items-center text-green-400 text-sm">
+                                            <FiMapPin className="mr-1" />
+                                            {testimonial.location}
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                    </motion.div>
+
                     {/* Newsletter Section */}
                     <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="text-white text-center"
+                        className="py-20 px-4 bg-[#161914] relative overflow-hidden"
                     >
-                        <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-8">
-                            ติดตามบทความใหม่
-                        </motion.h2>
-                        <motion.p variants={itemVariants} className="mb-8 max-w-2xl mx-auto">
-                            รับการแจ้งเตือนเมื่อมีบทความใหม่ พร้อมเคล็ดลับการเดินทางและข้อมูลที่น่าสนใจ
-                        </motion.p>
-                        <motion.div variants={itemVariants} className="flex max-w-md mx-auto gap-4">
-                            <input
-                                type="email"
-                                placeholder="อีเมลของคุณ"
-                                className="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:outline-none focus:border-white/40"
-                            />
-                            <button className="px-6 py-2 bg-white text-[#161914] rounded-lg font-semibold hover:bg-white/90 transition-colors">
-                                สมัครรับข่าวสาร
-                            </button>
-                        </motion.div>
+                        <div className="absolute inset-0 bg-[url('/topo-map.svg')] opacity-5"></div>
+                        <div className="max-w-4xl mx-auto relative z-10">
+                            <motion.div
+                                variants={itemVariants}
+                                className="text-center mb-8"
+                            >
+                                <h2 className="text-white text-4xl font-bold mb-4">ติดตามข่าวสารและโปรโมชั่น</h2>
+                                <p className="text-gray-300">รับข่าวสารและโปรโมชั่นพิเศษก่อนใคร</p>
+                            </motion.div>
+                            <motion.div
+                                variants={itemVariants}
+                                className="flex flex-col md:flex-row gap-4 max-w-xl mx-auto"
+                            >
+                                <div className="relative flex-1">
+                                    <input
+                                        type="email"
+                                        placeholder="อีเมลของคุณ"
+                                        className="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:border-green-500"
+                                    />
+                                    <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60" />
+                                </div>
+                                <button className="px-8 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                                    สมัครรับข่าวสาร
+                                </button>
+                            </motion.div>
+                        </div>
                     </motion.div>
                 </div>
             </div>

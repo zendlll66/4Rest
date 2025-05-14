@@ -5,14 +5,14 @@ import Footer from './Footer'
 
 const HomepageLayout = () => {
     return (
-        <div className='min-h-screen  relative flex flex-col'>
+        <div className='min-h-screen flex flex-col'>
             <div className='flex-none'>
                 <Navbar />
             </div>
-            <main className='flex-1'>
+            <main className='flex-1 relative'>
                 <Outlet />
             </main>
-            <div className='flex-none absolute bottom-0 left-0 right-0'>
+            <div className='flex-none'>
                 <Footer />
             </div>
         </div>
