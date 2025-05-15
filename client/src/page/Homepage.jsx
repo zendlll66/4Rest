@@ -87,21 +87,21 @@ const Homepage = () => {
             location: 'ดอยม่อนจอง',
             rating: 5,
             comment: 'บรรยากาศดีมาก เงียบสงบ เหมาะกับการพักผ่อนสุดๆ',
-            avatar: '/assets/images/avatar1.jpg'
+            avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
         },
         {
             name: 'คุณสมหญิง',
             location: 'ปางอุ๋ง',
             rating: 5,
             comment: 'วิวสวยมาก ตื่นเช้ามาเจอทะเลหมอกแบบนี้คุ้มค่าจริงๆ',
-            avatar: '/assets/images/avatar2.jpg'
+            avatar: 'https://randomuser.me/api/portraits/women/44.jpg'
         },
         {
             name: 'คุณสมศักดิ์',
             location: 'บ้านแม่กำปอง',
             rating: 4,
             comment: 'ชุมชนน่ารัก บรรยากาศดี อาหารอร่อย',
-            avatar: '/assets/images/avatar3.jpg'
+            avatar: 'https://randomuser.me/api/portraits/men/65.jpg'
         }
     ]
 
